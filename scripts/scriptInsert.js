@@ -25,7 +25,7 @@ var obj ={
                         },
                         "number": `9876543${i}`,
                         "registeredOn": 1576846833000,
-                        "role": "BUSINESS",
+                        "role": "CLINIC",
                         "status": "REGISTERED",
                         "availability": [],
                         "documents": [],

@@ -161,7 +161,7 @@ user.statics = {
       .populate("doctors")
       .populate("clinics")
       .lean(true);
-    console.log(users.filter((x) => x.role === "PROFESIONAL").length);
+    console.log(users.filter((x) => x.role === "DOCTOR").length);
     // let k=0;
     // users.map(x=> {
     //     // let x=JSON.parse(JSON.stringify(t))

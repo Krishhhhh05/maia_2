@@ -7,8 +7,8 @@ module.exports={
     },
 
     DocCategories :{ 
-        DOCTOR:'PROFESIONAL',
-        CLINIC:'BUSINESS',
+        DOCTOR:'DOCTOR',
+        CLINIC:'CLINIC',
         DOCTOR_WITH_CLICNIC:'DOCTOR_WITH_CLICNIC',
     },
 

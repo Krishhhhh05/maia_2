@@ -59,9 +59,9 @@ var cont = {
           .populate("clinics")
           .populate("doctors")
           .lean();
-      } else if (body.role == "PROFESSIONAL") {
+      } else if (body.role == "DOCTOR") {
         var result = await User.find(findString).populate("doctors").lean();
-      } else if (body.role == "BUSINESS") {
+      } else if (body.role == "CLINIC") {
         var result = await User.find(findString).populate("clinics").lean();
       }
       console.log("res", result.length);
@@ -96,9 +96,9 @@ var cont = {
           .populate("clinics")
           .populate("doctors")
           .lean();
-      } else if (body.role == "PROFESIONAL") {
+      } else if (body.role == "DOCTOR") {
         var result = await User.find(findString).populate("doctors").lean();
-      } else if (body.role == "BUSINESS") {
+      } else if (body.role == "CLINIC") {
         var result = await User.find(findString).populate("clinics").lean();
       }
       console.log("res", result.length);
@@ -408,7 +408,7 @@ var cont = {
         education: [],
         experience: [],
         awards: [],
-        role: "PROFESIONAL",
+        role: "DOCTOR",
         clinics: [],
         memberships: [],
         address: {
@@ -428,7 +428,7 @@ var cont = {
       const result = await User.create(doctor);
 
       res.locals.doctor = result;
-      if (body.send_text) sendSms(result._id, result.number, "PROFESSIONAL");
+      if (body.send_text) sendSms(result._id, result.number, "DOCTOR");
 
       if (body.send_email) sendEmail(result);
 
@@ -457,11 +457,11 @@ var cont = {
           message: "Roll Number Is Required",
         });
       }
-      clinic.role = "BUSINESS";
+      clinic.role = "CLINIC";
       clinic.registeredOn = Date.now();
       var c = await User.findOne({
         number: body.roll_number,
-        role: "BUSINESS",
+        role: "CLINIC",
         visible: 1,
       });
 
@@ -934,7 +934,7 @@ var cont = {
       success: true,
       old_object: object,
     };
-    if (object.role == "PROFESIONAL") {
+    if (object.role == "DOCTOR") {
       // object.clinics = ;
       let clinics = await User.find({
         _id: {
