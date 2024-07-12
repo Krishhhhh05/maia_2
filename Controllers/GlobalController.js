@@ -428,9 +428,9 @@ var cont = {
       const result = await User.create(doctor);
 
       res.locals.doctor = result;
-      if (body.send_text) sendSms(result._id, result.number, "DOCTOR");
+      // if (body.send_text) sendSms(result._id, result.number, "DOCTOR");
 
-      if (body.send_email) sendEmail(result);
+      // if (body.send_email) sendEmail(result);
 
       res.json({
         success: true,
@@ -537,44 +537,53 @@ var cont = {
       });
     }
   },
-  getClinic: async function (req, res) {
-    console.log(req.body);
+ getClinic: async function (req, res) {
+  console.log(req.body);
 
-    try {
-      var result = await User.findOne({
-        _id: Object(req.body.id),
+  try {
+    var result = await User.findOne({
+      _id: Object(req.body.id),
+    }).lean();
+    console.log("res", result);
+    var allDoctors = [];
+
+    if (result.doctors && result.doctors.length > 0) {
+      let doctorIds = [...new Set(result.doctors)];
+      console.log("doctorIds", doctorIds);
+
+      // let doctors = await User.find({
+      //   _id: Object(doctorIds[0]),  
+      // }).lean();
+
+      let doctors = await User.find({
+        _id: { $in: doctorIds }
       }).lean();
-      console.log("res", result);
-      var allDoctors = [];
-      if (result.doctors)
-        if (result.doctors.length > 0) {
-          let doctors = await User.find({
-            _id: {
-              $in: [...new Set(result.doctors)],
-            },
-            visible: 1,
-          });
-          res.doctors_found = doctors;
-          if (result.doctors.length == doctors.length) {
-            console.log("doctors work");
-          } else {
-            result.doctors = doctors.map((c) => c._id);
-          }
-          allDoctors = doctors;
-        }
-      res.send({
-        success: true,
-        data: result,
-        doctors: allDoctors,
-      });
-    } catch (error) {
-      console.log("err", error);
-      res.send({
-        success: false,
-        msg: error.message,
-      });
+      
+      res.doctors_found = doctors;
+
+      if (doctorIds.length === doctors.length) {
+        console.log("All doctors found");
+      } else {
+        console.log("Some doctors not found, updating doctor list");
+        result.doctors = doctors.map((c) => c._id);
+      }
+      allDoctors = doctors;
     }
-  },
+
+    res.send({
+      success: true,
+      data: result,
+      doctors: allDoctors,
+    });
+  } catch (error) {
+    console.log("err", error);
+    res.send({
+      success: false,
+      msg: error.message,
+    });
+  }
+},
+
   showUser: async function (req, res) {
     var body = req.body;
 
@@ -634,7 +643,7 @@ var cont = {
       console.log("findstring", JSON.stringify(findString, null, 3));
 
       var result = await Client.find(findString);
-      populate("doctor").lean();
+      // populate("doctor").lean();
       console.log("res", result.length);
 
       res.send({

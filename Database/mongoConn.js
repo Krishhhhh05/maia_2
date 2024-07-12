@@ -1,10 +1,11 @@
 "use strict";
+require("dotenv").config();
 
 const mongoose = require("mongoose");
 const autoIncrement = require("mongoose-auto-increment");
 
-const url = process.env.db_url;
-console.log("trying to connect to db...  " + process.env.NODE_ENV + " " + url);
+const url = process.env.DB_URL;
+console.log("trying to connect to db..." + process.env.NODE_ENV + " ");
 
 mongoose.connect(url, {
   useNewUrlParser: true,

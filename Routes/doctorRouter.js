@@ -14,7 +14,6 @@ router.post('/resendOtp',docController.resendOtp);
 
 router.post('/login',docController.login, docController.generateOtp);
 router.post('/verifyOtpLogin',docController.verifyOtp);
-
 router.post('/updateDoctor',docController.updateDoctor);
 router.post('/updateClinic',docController.updateClinic);
 router.post('/uploadFile',docController.uploadFile);

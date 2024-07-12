@@ -71,7 +71,7 @@ async function main(req, res, next) {
         if (req.body.clinic == "") delete req.body.clinic;
         let item = await new model(req.body).save();
         res.json(getResV3(item));
-        nc.onNewAppointment(item);
+        // nc.onNewAppointment(item);
       } catch (e) {
         next(e);
       }
