@@ -411,6 +411,7 @@ var cont = {
         role: "DOCTOR",
         clinics: [],
         memberships: [],
+        
         address: {
           line1: "",
           line2: "",
@@ -440,7 +441,8 @@ var cont = {
     } catch (err) {
       res.json({
         success: false,
-        message: err,
+        message: "Error with post",
+
       });
     }
   },
@@ -1098,6 +1100,117 @@ var cont = {
       });
     }
   },
+
+
+  addClinicWValidation : async (req, res) => {
+    try {
+      const body = req.body;
+      const clinic = body;
+      console.log(body);
+  
+      // Validation
+      if (!body.name) {
+        return res.send({ success: false, message: "Enter Clinic Name" });
+      }
+      if (!body.contact_no) {
+        return res.send({ success: false, message: "Enter Clinic's Contact Number" });
+      }
+      if (!body.about) {
+        return res.send({ success: false, message: "Enter Clinic's About Details" });
+      }
+      if (!body.representative) {
+        return res.send({ success: false, message: "Enter Clinic's Representative Name" });
+      }
+      if (!body.representative_no || body.representative_no.length != 10) {
+        return res.send({ success: false, message: "Enter Clinic's Representative Number" });
+      }
+      if (!body.amenities) {
+        return res.send({ success: false, message: "Enter Clinic Amenities" });
+      }
+      if (!body.address || !body.address.address) {
+        return res.send({ success: false, message: "Enter Clinic's Address" });
+      }
+      if (!body.address.city) {
+        return res.send({ success: false, message: "Enter Clinic's City" });
+      }
+      if (!body.address.state) {
+        return res.send({ success: false, message: "Enter Clinic's State" });
+      }
+      if (!body.address.zipcode || body.address.zipcode.length < 1) {
+        return res.send({ success: false, message: "Enter Clinic's Valid Zipcode" });
+      }
+      if (!body.address.country) {
+        return res.send({ success: false, message: "Enter Clinic's Country" });
+      }
+      
+      if (!body.billing_details.pan) {
+        return res.send({ success: false, message: "Enter Clinic's PAN" });
+      }
+      if (!body.billing_details.gst) {
+        return res.send({ success: false, message: "Enter Clinic's GST" });
+      }
+      if (!body.billing_details.establish_date) {
+        return res.send({ success: false, message: "Enter Clinic's Establishment Date" });
+      }
+      if (!body.billing_details.billing_email) {
+        return res.send({ success: false, message: "Enter Clinic's Billing Email" });
+      }
+      if (!body.billing_details.accountant) {
+        return res.send({ success: false, message: "Enter Clinic's Accountant" });
+      }
+      if (!body.billing_details.accountant_no) {
+        return res.send({ success: false, message: "Enter Clinic's Accountant Number" });
+      }
+      if (!body.registered_address || !body.registered_address.address) {
+        return res.send({ success: false, message: "Enter Clinic's Registered Address" });
+      }
+      if (!body.registered_address.city) {
+        return res.send({ success: false, message: "Enter Clinic's Registered Address City" });
+      }
+      if (!body.registered_address.state) {
+        return res.send({ success: false, message: "Enter Clinic's Registered Address State" });
+      }
+      if (!body.registered_address.zipcode || body.registered_address.zipcode.length < 1) {
+        return res.send({ success: false, message: "Enter Clinic's Registered Address Zipcode" });
+      }
+      if (!body.registered_address.country) {
+        return res.send({ success: false, message: "Enter Clinic's Registered Address Country" });
+      }
+      
+      clinic.role = "CLINIC";
+      clinic.registeredOn = Date.now();
+  
+      // Check for existing clinic
+      const existingClinic = await User.findOne({
+        number: body.contact_no,
+        role: "CLINIC",
+        visible: 1,
+      });
+  
+      if (!existingClinic) {
+        const result = await User.create(clinic);
+        res.locals.clinic = result;
+        return res.json({
+          success: true,
+          result: result._id,
+          clinic: result,
+          message: "Clinic Added",
+        });
+      } else {
+        return res.json({
+          success: false,
+          result: existingClinic._id,
+          clinic: existingClinic,
+          message: "Clinic Already Exists",
+        });
+      }
+    } catch (err) {
+      return res.send({
+        success: false,
+        message: err.message,
+      });
+    }
+  },
 };
 
 function cloudinaryUpload(file) {
@@ -1196,4 +1309,10 @@ async function sendSms(id, number, role) {
     });
   }
 }
+
+
+//new apis
+
+
+
 module.exports = cont;

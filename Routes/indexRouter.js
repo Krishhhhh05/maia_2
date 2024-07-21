@@ -40,4 +40,8 @@ router.delete("/cleanv2appointments", GlobalCont.cleanV2Appointments);
 router.delete("/cleanClients", GlobalCont.cleanClients);
 router.delete("/cleantreatments", GlobalCont.cleanTreatments);
 
+
+router.post("/addClinicWValidation", GlobalCont.addClinicWValidation);
+
+
 module.exports = router;
