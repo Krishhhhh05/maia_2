@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const autoIncrement = require("mongoose-auto-increment");
 
 const url = process.env.DB_URL;
-console.log("trying to connect to db..." + process.env.NODE_ENV + " ");
+console.log("trying to connect to db..." + url + " ");
 
 mongoose.connect(url, {
   useNewUrlParser: true,

@@ -14,7 +14,6 @@ router.post('/registerNewClinicCRM', GlobalCont.addNewClinicUsingCrm);
 router.post('/hideUser', GlobalCont.hideUser);
 router.post('/hideUser', GlobalCont.hideUser);
 router.post('/getClinic', GlobalCont.getClinic);
-
 router.post('/sanitize', GlobalCont.sanitizaAll);
 
 
